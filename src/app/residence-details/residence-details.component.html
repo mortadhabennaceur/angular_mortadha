@@ -1,0 +1,12 @@
+<div *ngIf="residence">
+  <h2>{{ residence.name }}</h2>
+  <p>{{ residence.address }}</p>
+  <img [src]="residence.image" alt="{{ residence.name }}" width="200">
+  <p>Status:
+    <span *ngIf="residence.status === 'Disponible'">✅ Available</span>
+    <span *ngIf="residence.status === 'En Construction'">🛠 Under Construction</span>
+    <span *ngIf="residence.status === 'Vendu'">❌ Sold</span>
+  </p>
+
+  <button *ngIf="nextResidenceId" [routerLink]="['/residences', nextResidenceId]">Next</button>
+</div>

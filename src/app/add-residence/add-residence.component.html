@@ -1,0 +1,55 @@
+<h1>{{ isUpdateMode ? 'Mettre à jour la résidence' : 'Ajouter une nouvelle résidence' }}</h1>
+
+<form [formGroup]="residenceForm" (ngSubmit)="saveResidence()">
+  <input type="hidden" formControlName="id">
+
+  <label for="name">Nom de la résidence :</label>
+  <input type="text" id="name" formControlName="name" required />
+  <div *ngIf="residenceForm.get('name')?.invalid && residenceForm.get('name')?.touched">
+    <small *ngIf="residenceForm.get('name')?.hasError('required')">Ce champ est obligatoire.</small>
+    <small *ngIf="residenceForm.get('name')?.hasError('minlength')">Minimum 3 caractères.</small>
+  </div>
+
+  <label for="address">Adresse :</label>
+  <input type="text" id="address" formControlName="address" required />
+  <div *ngIf="residenceForm.get('address')?.invalid && residenceForm.get('address')?.touched">
+    <small>Ce champ est obligatoire.</small>
+  </div>
+
+  <label for="image">Image :</label>
+  <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*" />
+  <div *ngIf="residenceForm.get('image')?.invalid && residenceForm.get('image')?.touched">
+    <small>Veuillez sélectionner une image.</small>
+  </div>
+
+    <!-- Image preview -->
+    <div *ngIf="imagePreview">
+      <p>Prévisualisation de l'image :</p>
+      <img [src]="imagePreview" alt="Prévisualisation" width="200">
+    </div>
+
+  <label for="status">Statut :</label>
+  <select formControlName="status">
+    <option value="Disponible">Disponible</option>
+    <option value="En Construction">En Construction</option>
+    <option value="Vendu">Vendu</option>
+  </select>
+
+  <h3>Appartements</h3>
+  <div formArrayName="apartments">
+    <div *ngFor="let apartment of apartments.controls; let i = index" [formGroupName]="i">
+      <label>Nom :</label>
+      <input type="text" formControlName="name" required />
+      <label>Surface (m²) :</label>
+      <input type="number" formControlName="surface" required />
+      <label>Prix (€) :</label>
+      <input type="number" formControlName="price" required />
+      <button type="button" (click)="removeApartment(i)">❌ Supprimer</button>
+    </div>
+  </div>
+
+  <button type="button" (click)="addApartment()">➕ Ajouter un appartement</button>
+
+  <button type="submit">{{ isUpdateMode ? 'Mettre à jour' : 'Ajouter' }}</button>
+  <button (click)="router.navigate(['/residences'])" type="button">Annuler</button>
+</form>

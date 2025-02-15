@@ -1,0 +1,40 @@
+<form [formGroup]="apartForm" (ngSubmit)="onSubmit()">
+  <label>Apartment Number:</label>
+  <input type="text" formControlName="apartNum" />
+  <div *ngIf="apartForm.get('apartNum')?.invalid && apartForm.get('apartNum')?.touched">
+    <small>Only numbers are allowed.</small>
+  </div>
+
+  <label>Floor Number:</label>
+  <input type="text" formControlName="floorNum" />
+  <div *ngIf="apartForm.get('floorNum')?.invalid && apartForm.get('floorNum')?.touched">
+    <small>Only numbers are allowed.</small>
+  </div>
+
+  <label>Surface:</label>
+  <input type="text" formControlName="surface" />
+  
+  <label>Terrace:</label>
+  <input type="checkbox" formControlName="terrace" />
+
+  <label>Surface Terrace:</label>
+  <input type="text" formControlName="surfaceTerrace" />
+
+  <label>Category:</label>
+<div>
+  <label>
+    <input type="radio" formControlName="category" value="S+1" /> S+1
+  </label>
+  <label>
+    <input type="radio" formControlName="category" value="S+2" /> S+2
+  </label>
+  <label>
+    <input type="radio" formControlName="category" value="S+3" /> S+3
+  </label>
+</div>
+
+  <label>Residence ID:</label>
+  <input type="text" formControlName="residenceId" />
+
+  <button type="submit" [disabled]="apartForm.invalid">Add Apartment</button>
+</form>

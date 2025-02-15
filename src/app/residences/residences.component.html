@@ -1,0 +1,22 @@
+<div *ngFor="let i of listResidences">
+<h2>{{i.name}}</h2>
+{{i.address}}
+<img [src]="i.image" alt="{{ i.name }}" width="200">
+<p>Status: 
+    <span *ngIf="i.status === 'Disponible'">✅ Available</span>
+    <span *ngIf="i.status === 'En Construction'">🛠 Under Construction</span>
+    <span *ngIf="i.status === 'Vendu'">❌ Sold</span>
+  </p>
+<button (click)="afficheradresse(i.address)">Show Location</button>
+<button (click)="ajouteraufavoris(i)">Like</button>
+<button [routerLink]="['/residences', i.id]">Details</button>
+<button (click)="goToUpdateResidence(i.id)">Update Residence</button>
+<button (click)="goToApartmentsList(i.id)">Apartments List</button>
+</div>
+<button (click)="goToAddResidence()">Add New Residence</button>
+
+<input type="text" placeholder="Search by address..." (input)="filterAddress($event)" />
+
+<ul>
+  <li *ngFor="let residence of filteredResidences">{{ residence.address }}</li>
+</ul>

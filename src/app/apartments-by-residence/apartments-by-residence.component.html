@@ -1,0 +1,7 @@
+<div *ngFor="let apartment of filteredApartments">
+    <h3>Apartment {{ apartment.apartNum }}</h3>
+    <p>Floor: {{ apartment.floorNum }}</p>
+    <p>Surface: {{ apartment.surface }} m²</p>
+  </div>
+  <button routerLink="/add-apartment">Create New Apartment</button>
+  
