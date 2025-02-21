@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Residence } from '../core/models/Residence';
+import { ResidenceService } from '../core/models/Services/ResidenceService';
 
 @Component({
   selector: 'app-add-residence',
@@ -16,7 +17,8 @@ export class AddResidenceComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    public router: Router
+    public router: Router,
+    private residenceService: ResidenceService
   ) {
     const navigation = this.router.getCurrentNavigation();
     this.listResidences = navigation?.extras.state?.['residences'] || [];
@@ -24,7 +26,7 @@ export class AddResidenceComponent implements OnInit {
 
   ngOnInit(): void {
     this.residenceForm = this.fb.group({
-      id: [0], // Champ caché
+      id: [{ value: 0 }], // Champ ID désactivé
       name: ['', [Validators.required, Validators.minLength(3)]],
       address: ['', Validators.required],
       image: [null, Validators.required],
@@ -36,11 +38,10 @@ export class AddResidenceComponent implements OnInit {
       if (params['id']) {
         this.isUpdateMode = true;
         const id = +params['id'];
-        const existingResidence = this.listResidences.find(res => res.id === id);
-        if (existingResidence) {
-          this.residenceForm.patchValue(existingResidence);
-          this.imagePreview = existingResidence.image; // Load existing image preview
-        }
+        this.residenceService.getResidenceById(id).subscribe(data => {
+          this.residenceForm.patchValue(data);
+          this.imagePreview = data.image; 
+        });
       }
     });
   }
@@ -85,20 +86,19 @@ export class AddResidenceComponent implements OnInit {
       return;
     }
 
-    const formData = this.residenceForm.value;
+    const formData = this.residenceForm.getRawValue(); // Récupère les valeurs du formulaire, y compris les champs désactivés
 
     if (this.isUpdateMode) {
-      const index = this.listResidences.findIndex(res => res.id === formData.id);
-      if (index !== -1) {
-        this.listResidences[index] = { ...formData };
+      this.residenceService.updateResidence(formData.id, formData).subscribe(() => {
         alert('Résidence mise à jour avec succès !');
-      }
+        this.router.navigate(['/residences']);
+      });
     } else {
-      formData.id = this.listResidences.length + 1;
-      this.listResidences.push(formData);
-      alert('Résidence ajoutée avec succès !');
+      this.residenceService.addResidence(formData).subscribe(() => {
+        alert('Résidence ajoutée avec succès !');
+        this.router.navigate(['/residences']);
+      });
     }
-
-    this.router.navigate(['/residences'], { state: { residences: this.listResidences } });
   }
+  
 }

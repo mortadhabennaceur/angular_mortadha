@@ -1,6 +1,7 @@
 <div *ngFor="let apartment of apartments">
   <h3>Apartment {{ apartment.apartNum }}</h3>
   <p>Floor: {{ apartment.floorNum }}</p>
+  <h3>Appartement ({{ apartment.surface }}m²) - {{ getSameSurface(apartment.surface) }} similaires</h3>
   <p>Surface: {{ apartment.surface }} m²</p>
 </div>
 

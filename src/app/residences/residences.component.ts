@@ -1,32 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Residence } from '../core/models/Residence';
+import { CommonService } from '../core/models/Services/commonService';
+import { ResidenceService } from '../core/models/Services/ResidenceService';
 
 @Component({
   selector: 'app-residences',
   templateUrl: './residences.component.html',
   styleUrls: ['./residences.component.css']
 })
-export class ResidencesComponent {
-  listResidences:Residence[]=[
-    {id:1,"name": "El fel","address":"Borj Cedria",
-    "image":"../../assets/images/R1.jpg", status: "Disponible"},
-    {id:2,"name": "El yasmine",
-    "address":"Ezzahra","image":"../../assets/images/R2.jpg", status:
-    "Disponible" },
-    {id:3,"name": "El Arij",
-    "address":"Rades","image":"../../assets/images/R3.jpg", status:
-    "Vendu"},
-    {id:4,"name": "El Anber","address":"inconnu",
-    "image":"../../assets/images/R4.jpg", status: "En Construction"}
-    ];
+export class ResidencesComponent implements OnInit{
+  listResidences:Residence[]=[];
 
-    constructor(private router: Router) {
+    constructor(private router: Router,private commonService: CommonService,private residenceService: ResidenceService) {
       const navigation = this.router.getCurrentNavigation();
       const updatedResidences = navigation?.extras.state?.['residences'];
       if (updatedResidences) {
         this.listResidences = updatedResidences;
       }
+    }
+
+    ngOnInit(): void {
+      this.residenceService.getResidences().subscribe((data) => {
+        this.listResidences = data;
+      });
+    }
+
+    deleteResidence(id: number): void {
+      this.residenceService.deleteResidence(id).subscribe(() => {
+        this.listResidences = this.listResidences.filter(res => res.id !== id);
+      });
     }
   
     goToAddResidence(): void {
@@ -34,7 +37,7 @@ export class ResidencesComponent {
     }
   
     goToUpdateResidence(residenceId: number): void {
-      this.router.navigate([`/add-residence`, residenceId], { state: { residences: this.listResidences } });
+      this.router.navigate([`/add-residence`, residenceId]);
     }
     
     goToApartmentsList(residenceId: number): void {
@@ -60,6 +63,10 @@ export class ResidencesComponent {
     this.filteredResidences = this.listResidences.filter(listResidences =>
       listResidences.address.toLowerCase().includes(inputValue)
     );
+  }
+
+  getSimilarAddresses(address: string): number {
+    return this.commonService.getSameValueOf(this.listResidences, 'address', address);
   }
     
 

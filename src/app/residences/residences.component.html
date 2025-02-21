@@ -1,5 +1,6 @@
 <div *ngFor="let i of listResidences">
 <h2>{{i.name}}</h2>
+<h2>{{ i.name }} ({{ getSimilarAddresses(i.address) }} similaires)</h2>
 {{i.address}}
 <img [src]="i.image" alt="{{ i.name }}" width="200">
 <p>Status: 
@@ -12,6 +13,7 @@
 <button [routerLink]="['/residences', i.id]">Details</button>
 <button (click)="goToUpdateResidence(i.id)">Update Residence</button>
 <button (click)="goToApartmentsList(i.id)">Apartments List</button>
+<button (click)="deleteResidence(i.id)">❌ Supprimer</button>
 </div>
 <button (click)="goToAddResidence()">Add New Residence</button>
 
