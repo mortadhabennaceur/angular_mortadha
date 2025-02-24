@@ -1,13 +1,15 @@
+import { Residence } from './core/models/Residence';
+import { Apartment } from './core/models/Apartment';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { ResidencesComponent } from './residences/residences.component';
-import { ResidenceDetailsComponent } from './residence-details/residence-details.component';
-import { AddResidenceComponent } from './add-residence/add-residence.component';
+import { ResidencesComponent } from './Residence/residences/residences.component';
+import { ResidenceDetailsComponent } from './Residence/residence-details/residence-details.component';
+import { AddResidenceComponent } from './Residence/add-residence/add-residence.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { ApartmentsComponent } from './apartments/apartments.component';
-import { ApartmentsByResidenceComponent } from './apartments-by-residence/apartments-by-residence.component';
-import { AddApartmentComponent } from './add-apartment/add-apartment.component';
+import { ApartmentsComponent } from './Apartment/apartments/apartments.component';
+import { ApartmentsByResidenceComponent } from './Apartment/apartments-by-residence/apartments-by-residence.component';
+import { AddApartmentComponent } from './Apartment/add-apartment/add-apartment.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Residence } from '../core/models/Residence';
-import { CommonService } from '../core/models/Services/commonService';
-import { ResidenceService } from '../core/models/Services/ResidenceService';
+import { Residence } from '../../core/models/Residence';
+import { CommonService } from '../../core/models/Services/commonService';
+import { ResidenceService } from '../../core/models/Services/ResidenceService';
 
 @Component({
   selector: 'app-residences',

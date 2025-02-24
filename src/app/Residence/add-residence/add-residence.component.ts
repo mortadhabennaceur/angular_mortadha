@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Residence } from '../core/models/Residence';
-import { ResidenceService } from '../core/models/Services/ResidenceService';
+import { Residence } from '../../core/models/Residence';
+import { ResidenceService } from '../../core/models/Services/ResidenceService';
 
 @Component({
   selector: 'app-add-residence',
@@ -26,7 +26,7 @@ export class AddResidenceComponent implements OnInit {
 
   ngOnInit(): void {
     this.residenceForm = this.fb.group({
-      id: [{ value: 0 }], // Champ ID désactivé
+      id: [null], // ✅ Mettre null pour que l'API génère un ID
       name: ['', [Validators.required, Validators.minLength(3)]],
       address: ['', Validators.required],
       image: [null, Validators.required],
@@ -85,20 +85,22 @@ export class AddResidenceComponent implements OnInit {
       alert('Veuillez remplir tous les champs correctement.');
       return;
     }
-
-    const formData = this.residenceForm.getRawValue(); // Récupère les valeurs du formulaire, y compris les champs désactivés
-
-    if (this.isUpdateMode) {
+  
+    let formData = this.residenceForm.getRawValue(); // Récupère toutes les valeurs du formulaire
+  
+    if (!this.isUpdateMode) {
+      delete formData.id; // ✅ Supprime l'ID pour que `json-server` le génère
+      this.residenceService.addResidence(formData).subscribe((newResidence) => {
+        alert(`Résidence ajoutée avec succès ! ID : ${newResidence.id}`);
+        this.router.navigate(['/residences']);
+      });
+    } else {
       this.residenceService.updateResidence(formData.id, formData).subscribe(() => {
         alert('Résidence mise à jour avec succès !');
         this.router.navigate(['/residences']);
       });
-    } else {
-      this.residenceService.addResidence(formData).subscribe(() => {
-        alert('Résidence ajoutée avec succès !');
-        this.router.navigate(['/residences']);
-      });
     }
   }
+  
   
 }

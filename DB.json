@@ -5,7 +5,8 @@
       "name": "El fel",
       "address": "Borj Cedria",
       "image": "../../assets/images/R1.jpg",
-      "status": "Disponible"
+      "status": "Disponible",
+      "apartments": []
     },
     {
       "id": "2",

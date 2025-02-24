@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonService } from '../core/models/Services/commonService';
+import { CommonService } from '../../core/models/Services/commonService';
 
 
 @Component({
